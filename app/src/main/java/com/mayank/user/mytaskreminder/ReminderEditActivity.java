@@ -173,8 +173,6 @@ public class ReminderEditActivity extends Activity {
 
     private void populateFields()  {
 
-
-
         // Only populate the text boxes and change the calendar date
         // if the row is not null from the database.
         if (mRowId != null) {
@@ -238,7 +236,7 @@ public class ReminderEditActivity extends Activity {
         outState.putLong(RemindersDbAdapter.KEY_ROWID, mRowId);
     }
 
-
+    // Editing of Reminder is done in this method where it is checked whether already present in database
 
     private void saveState() {
         String title = mTitleText.getText().toString();
@@ -248,15 +246,18 @@ public class ReminderEditActivity extends Activity {
         String reminderDateTime = dateTimeFormat.format(mCalendar.getTime());
 
         if (mRowId == null) {
-
+            // Insert performed and id returned
             long id = mDbHelper.createReminder(title, body, reminderDateTime);
             if (id > 0) {
                 mRowId = id;
+                // set row id
             }
         } else {
+            // Update the title, body, date and time of reminder into database
             mDbHelper.updateReminder(mRowId, title, body, reminderDateTime);
         }
 
+        // Sets Reminder and save is complete on Click of Confirm Button
         new ReminderManager(this).setReminder(mRowId, mCalendar);
     }
 
