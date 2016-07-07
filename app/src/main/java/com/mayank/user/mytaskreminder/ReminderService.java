@@ -4,10 +4,12 @@ package com.mayank.user.mytaskreminder;
  * Created by user on 07-07-2016.
  */
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 public class ReminderService extends WakeReminderIntentService {
@@ -16,6 +18,7 @@ public class ReminderService extends WakeReminderIntentService {
         super("ReminderService");
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     void doReminderWork(Intent intent) {
         Log.d("ReminderService", "Doing work.");
@@ -49,11 +52,8 @@ public class ReminderService extends WakeReminderIntentService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, note);
-
         int id = (int)((long)rowId);
-        mgr.notify(id, note);
-
+        notificationManager.notify(id, note);
 
     }
 }
