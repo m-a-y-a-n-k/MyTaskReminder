@@ -15,7 +15,7 @@ public abstract class WakeReminderIntentService extends IntentService {
     public static final String LOCK_NAME_STATIC="com.mayank.user.mytaskreminder.Static";        // STATIC_LOCK_NAME
     private static PowerManager.WakeLock lockStatic=null;
 
-    // acquire a static lock on alarm recieve broadcast reciever
+    // acquire a static lock on alarm reciever broadcast reciever
     public static void acquireStaticLock(Context context) {
         getLock(context).acquire();
     }
