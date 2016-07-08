@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/myCover"
             android:layout_width="100dp"
-            android:layout_margin="20dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:layout_height="100dp" />
+            android:layout_margin="20dp" />
 
         <TextView
-            android:layout_below="@+id/myCover"
             android:id="@+id/myTitle"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"/>
+            android:layout_below="@+id/myCover"
+            android:layout_gravity="center"
+            android:layout_margin="20dp" />
 
         <TextView
             android:id="@+id/myDateTime"
-            android:layout_below="@+id/myTitle"
-            android:layout_margin="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/myTitle"
+            android:layout_margin="20dp" />
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

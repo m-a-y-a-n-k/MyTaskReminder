@@ -1,10 +1,8 @@
 package com.mayank.user.mytaskreminder;
 
-import android.annotation.TargetApi;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -14,22 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.app.ListActivity;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.Bundle;
-import android.view.ContextMenu;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 
 /**
  * Created by user on 08-07-2016.
@@ -39,6 +22,10 @@ public class ReminderListFragment extends ListFragment {
     private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
     private RemindersDbAdapter mDbHelper;
+
+    public ReminderListFragment() {
+        super();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,31 +38,20 @@ public class ReminderListFragment extends ListFragment {
         return view;
     }
 
-    public ReminderListFragment() {
-        super();
-    }
-
     private void fillData() {
         Cursor remindersCursor = mDbHelper.fetchAllReminders();
         getActivity().startManagingCursor(remindersCursor);
-
-        remindersCursor.moveToFirst();
-        int remCount = 0;
-        while(!remindersCursor.isAfterLast()) {
-            remCount++;
-            remindersCursor.moveToNext();
-        }
 
         // Create an array to specify the fields we want to display in the list (only TITLE)
         //String[] from = new String[]{RemindersDbAdapter.KEY_TITLE};
 
         // and an array of the fields we want to bind those fields to (in this case just text1)
         //int[] to = new int[]{R.id.myTitle};
-        String[] myTitles = new String[remCount];
-        String[] myDateTime = new String[remCount];
+
         // Now create a simple cursor adapter and set it to display
 
-        ListAdapter reminders = new CustomAdapter(getActivity(),myTitles,myDateTime);
+        ReminderAdapter reminders = new ReminderAdapter(getActivity(), remindersCursor);
+
         //SimpleCursorAdapter reminders = new SimpleCursorAdapter(getActivity(), R.layout.reminder_row, remindersCursor, from, to);
         setListAdapter(reminders);
     }
