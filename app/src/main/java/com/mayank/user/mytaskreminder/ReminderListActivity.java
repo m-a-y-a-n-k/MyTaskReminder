@@ -19,8 +19,6 @@ public class ReminderListActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reminder_list);
-
-
     }
 
     private void createReminder() {
