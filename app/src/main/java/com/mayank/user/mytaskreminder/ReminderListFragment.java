@@ -1,8 +1,10 @@
 package com.mayank.user.mytaskreminder;
 
+import android.annotation.TargetApi;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -34,21 +36,23 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
  */
 public class ReminderListFragment extends ListFragment {
 
+    private static final int ACTIVITY_CREATE=0;
     private static final int ACTIVITY_EDIT=1;
     private RemindersDbAdapter mDbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_reminder_list,
-                container, false);
+
+        View view = inflater.inflate(R.layout.fragment_reminder_list, container, false);
+        mDbHelper = new RemindersDbAdapter(getActivity());
+        mDbHelper.open();
+
+        fillData();
+        return view;
     }
 
     public ReminderListFragment() {
         super();
-        mDbHelper = new RemindersDbAdapter(getActivity());
-        mDbHelper.open();
-        fillData();
-        registerForContextMenu(getListView());
     }
 
     private void fillData() {
@@ -68,14 +72,9 @@ public class ReminderListFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater mi) {
-        super.onCreateOptionsMenu(menu, mi);
-        mi.inflate(R.menu.list_menu, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        registerForContextMenu(getListView());
     }
 
     @Override
@@ -104,6 +103,40 @@ public class ReminderListFragment extends ListFragment {
         Intent i = new Intent(getActivity(), ReminderEditActivity.class);
         i.putExtra(RemindersDbAdapter.KEY_ROWID, id);
         startActivityForResult(i, ACTIVITY_EDIT);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuInflater mi = getActivity().getMenuInflater();
+        mi.inflate(R.menu.list_menu, menu);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.menu_insert:
+                createReminder();
+                return true;
+            case R.id.menu_settings:
+                Intent i = new Intent(getActivity(), TaskPreferences.class);
+                startActivity(i);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void createReminder() {
+        Intent i = new Intent(getActivity(), ReminderEditActivity.class);
+        startActivityForResult(i, ACTIVITY_CREATE);
     }
 
     @Override
